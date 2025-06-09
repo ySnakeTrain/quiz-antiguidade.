@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz sobre a Antiguidade</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #4b6cb7, #182848);
+      color: #fff;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #fdd835;
+      font-size: 2.8em;
+    }
+    .question {
+      display: none;
+      background-color: #2a2a40;
+      border: 2px solid #fdd835;
+      border-radius: 16px;
+      padding: 20px;
+      margin: 30px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .question.active {
+      display: block;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+    .options button {
+      background-color: #5c6bc0;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      margin: 10px 5px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+    .options button:hover {
+      background-color: #7986cb;
+      transform: scale(1.05);
+    }
+    .correct {
+      background-color: #66bb6a !important;
+    }
+    .wrong {
+      background-color: #ef5350 !important;
+    }
+    #pontuacaoFinal {
+      text-align: center;
+      font-size: 2em;
+      margin-top: 40px;
+      color: #ffee58;
+      font-weight: bold;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz Hardcore da Antiguidade ⚔️</h1>
+
+  <div class="question active" id="q1">
+    <h2>1️⃣ Qual dessas opções NÃO tem absolutamente nada a ver com o conceito de Antiguidade?</h2>
+    <div class="options">
+      <button onclick="resposta(this, false)">Civilizações antigas como a Grécia</button>
+      <button onclick="resposta(this, true)">A nova trend do TikTok</button>
+      <button onclick="resposta(this, false)">Fatos históricos antes da Idade Média</button>
+    </div>
+  </div>
+
+  <div class="question" id="q2">
+    <h2>2️⃣ Quem teve a ideia de que o povo pode escolher os líderes?</h2>
+    <div class="options">
+      <button onclick="resposta(this, true)">Gregos antigos (com tempo livre e debates na praça)</button>
+      <button onclick="resposta(this, false)">Os criadores do Big Brother</button>
+      <button onclick="resposta(this, false)">Os faraós egípcios (só que não)</button>
+    </div>
+  </div>
+
+  <div class="question" id="q3">
+    <h2>3️⃣ Em qual lugar era comum a galera resolver tretas discutindo na praça?</h2>
+    <div class="options">
+      <button onclick="resposta(this, true)">Atenas</button>
+      <button onclick="resposta(this, false)">Torre de Londres</button>
+      <button onclick="resposta(this, false)">Vila do Chaves</button>
+    </div>
+  </div>
+
+  <div class="question" id="q4">
+    <h2>4️⃣ Se você curte teatro, filosofia e política, agradeça a quem?</h2>
+    <div class="options">
+      <button onclick="resposta(this, false)">A Netflix</button>
+      <button onclick="resposta(this, true)">Aos gregos antigos (visionários demais)</button>
+      <button onclick="resposta(this, false)">Aos inventores do WhatsApp</button>
+    </div>
+  </div>
+
+  <div class="question" id="q5">
+    <h2>5️⃣ Em Esparta, quem mandava mesmo?</h2>
+    <div class="options">
+      <button onclick="resposta(this, true)">Os guerreiros (vida loka total)</button>
+      <button onclick="resposta(this, false)">As influencers do TikTok</button>
+      <button onclick="resposta(this, false)">Os camponeses pacíficos</button>
+    </div>
+  </div>
+
+  <div class="question" id="q6">
+    <h2>6️⃣ Quando a Antiguidade deu seu tchauzinho?</h2>
+    <div class="options">
+      <button onclick="resposta(this, false)">Quando Platão criou um canal no YouTube</button>
+      <button onclick="resposta(this, true)">Com a queda do Império Romano do Ocidente</button>
+      <button onclick="resposta(this, false)">Na estreia do primeiro filme dos Vingadores</button>
+    </div>
+  </div>
+
+  <div id="pontuacaoFinal"></div>
+
+  <audio id="somCerto" src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_2c2b36677a.mp3?filename=correct-2-46134.mp3"></audio>
+  <audio id="somErrado" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_937b665b04.mp3?filename=error-126627.mp3"></audio>
+  <audio id="musicaFinal" src="https://files.catbox.moe/6s1qwi.mp3"></audio>
+
+  <script>
+    let pontuacao = 0;
+    let respondidas = 0;
+    let total = 6;
+    let atual = 1;
+
+    function resposta(botao, correta) {
+      const botoes = botao.parentElement.querySelectorAll("button");
+      botoes.forEach(b => b.disabled = true);
+      if (correta) {
+        botao.classList.add("correct");
+        pontuacao++;
+        document.getElementById("somCerto").play();
+      } else {
+        botao.classList.add("wrong");
+        document.getElementById("somErrado").play();
+      }
+      respondidas++;
+      if (respondidas === total) {
+        document.getElementById("pontuacaoFinal").innerText = `Você acertou ${pontuacao} de ${total} perguntas! 🏆`;
+        if (pontuacao >= 4) {
+          document.getElementById("musicaFinal").play();
+        }
+      } else {
+        document.getElementById(`q${atual}`).classList.remove("active");
+        atual++;
+        document.getElementById(`q${atual}`).classList.add("active");
+      }
+    }
+  </script>
+</body>
+</html>
